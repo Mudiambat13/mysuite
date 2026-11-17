@@ -1,0 +1,10 @@
+# Règles de paie
+
+Ordre de calcul (`crates/payroll`) : salaire de base + indemnités = **brut** ; cotisations salariales (taux × base, plafond optionnel) ; cotisations employeur ; **assiette fiscale** (brut, ou brut − cotisations salariales selon le paramètre) ; impôt par **barème progressif** par tranches ; retenues ; **net** = brut − cotisations salariales − impôt − retenues ; coût employeur = brut + charges patronales.
+
+Cycle : brouillon (recalculable) → validée → clôturée (figée). Une seule paie non clôturée par période. Une simulation ne peut pas être validée.
+Données d'entrée figées dans `payroll_items.input`, résultat détaillé dans `result`, version des règles via `payroll_runs.rule_set_id`.
+
+**Mécanismes d'impôt optionnels** (aucune valeur légale ; paramétrés par le jeu de règles) : réduction pour personnes à charge (taux par personne, maximum, applicable à l'impôt de la fraction d'assiette ≤ une borne), plafond de l'impôt en fraction de l'assiette, arrondi final de l'impôt à un multiple. Ordre : impôt progressif → réduction → plafond → arrondi. Chaque ajustement est expliqué sur la ligne d'impôt. **Plancher SMIG de la base CNSS** : si une cotisation porte `floor_to_minimum_wage`, sa base est au moins égale au minimum mensuel de la classe de l'employé (grille en vigueur, même devise que la société). Sans classe, sans grille ou en cas de devises différentes, aucun plancher n'est appliqué. Le contrôle de conformité des salaires est informatif et ne bloque jamais la paie. Personnes à charge : historique daté par employé (`employee_dependents`), 0 si absent.
+
+**Pack RDC (`CD`)** : un **modèle brouillon sourcé** est proposé (voir [Pack paie RDC](../guide/paie-rdc.md)) ; il n'est jamais approuvé automatiquement et ses valeurs, issues de sources secondaires, doivent être confirmées. Auparavant : aucun taux fourni. Un expert doit saisir CNSS, IPR, plafonds, exonérations, règles de change, avec source officielle et date de vérification, puis un second utilisateur approuve. Non gérés à ce stade : heures supplémentaires, prorata d'entrée/sortie en cours de mois, multi-devise/conversion, régularisations, avances/prêts.

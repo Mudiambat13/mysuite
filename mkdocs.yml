@@ -1,0 +1,114 @@
+site_name: MySuite
+site_description: Documentation de MySuite, suite RH multi-sociétés (Rust + React)
+site_url: !ENV [SITE_URL, ""]
+repo_url: !ENV [REPO_URL, ""]
+docs_dir: docs
+strict: true
+use_directory_urls: true
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+exclude_docs: |
+  requirements.txt
+
+theme:
+  name: material
+  language: fr
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle: { icon: material/weather-night, name: Mode sombre }
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle: { icon: material/weather-sunny, name: Mode clair }
+
+extra_css: [stylesheets/extra.css]
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc: { permalink: true }
+  - pymdownx.details
+  - pymdownx.highlight: { anchor_linenums: true }
+  - pymdownx.inlinehilite
+  - pymdownx.snippets: { base_path: ["."], check_paths: true }
+  - pymdownx.superfences
+  - pymdownx.tabbed: { alternate_style: true }
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search:
+      lang: fr
+
+nav:
+  - Accueil: index.md
+  - Démarrer:
+      - Installation: demarrage/installation.md
+      - Configuration: demarrage/configuration.md
+      - Premiers pas: demarrage/premiers-pas.md
+  - Guide utilisateur:
+      - Rôles et permissions: guide/roles.md
+      - Tableau de bord: guide/tableau-de-bord.md
+      - Organisation: guide/organisation.md
+      - Employés: guide/employes.md
+      - Contrats: guide/contrats.md
+      - Congés: guide/conges.md
+      - Paie: guide/paie.md
+      - Pack paie RDC: guide/paie-rdc.md
+      - Grille SMIG: guide/smig.md
+      - Modèles de contrat: guide/modeles-contrat.md
+      - Pièces des employés: guide/documents.md
+      - Pointage: guide/pointage.md
+      - Badgeuses: guide/badgeuses.md
+      - Rapports: guide/rapports.md
+      - Utilisateurs: guide/utilisateurs.md
+      - Sécurité du compte: guide/securite-compte.md
+      - Journal d'audit: guide/audit.md
+  - Règles métier:
+      - Paie: business-rules/payroll.md
+      - Congés: business-rules/leave.md
+      - Contrats: business-rules/contracts.md
+      - Pointage et badgeuses: business-rules/attendance.md
+      - Rapports: business-rules/reports.md
+  - Architecture:
+      - Vue d'ensemble: architecture/overview.md
+      - "ADR 0001 — Monolithe modulaire": architecture/decisions/0001-monolithe-modulaire.md
+      - "ADR 0002 — Sessions serveur": architecture/decisions/0002-sessions-serveur.md
+      - "ADR 0003 — Isolation des sociétés": architecture/decisions/0003-isolation-tenant.md
+      - "ADR 0004 — Paie versionnée": architecture/decisions/0004-paie-versionnee.md
+  - Sécurité: security/security-model.md
+  - Exploitation:
+      - Déploiement: operations/deployment.md
+      - Sauvegarde et restauration: operations/backup-restore.md
+  - Référence:
+      - API: reference/api.md
+      - API (détails): api/openapi.md
+      - Permissions: reference/permissions.md
+      - Base de données: reference/base-de-donnees.md
+      - Moteur de paie: reference/moteur-de-paie.md
+  - Développement:
+      - Environnement: developpement/environnement.md
+      - Tests et qualité: developpement/tests.md
+      - Ajouter un module: developpement/ajouter-un-module.md
+      - Contribuer: developpement/contribuer.md
+      - Publier la documentation: developpement/documentation.md
+  - Feuille de route: roadmap.md
+  - Changelog: changelog.md

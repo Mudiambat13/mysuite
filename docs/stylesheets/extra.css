@@ -1,0 +1,3 @@
+.md-typeset .grid.cards > ul { gap: 0.8rem; }
+.md-typeset img { border-radius: 6px; border: 1px solid var(--md-default-fg-color--lightest); }
+.md-typeset table:not([class]) { font-size: 0.72rem; }

@@ -1,0 +1,39 @@
+[workspace]
+resolver = "3"
+members = ["crates/shared", "crates/payroll", "crates/app"]
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+license = "Proprietary"
+publish = false
+
+[workspace.dependencies]
+axum = { version = "0.8", features = ["macros"] }
+axum-extra = { version = "0.10", features = ["cookie"] }
+tokio = { version = "1", features = ["full"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace", "cors", "limit", "set-header", "request-id", "timeout"] }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "tls-rustls", "postgres", "uuid", "chrono", "rust_decimal", "json", "migrate", "macros"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+rust_decimal = { version = "1", features = ["serde-str", "db-postgres"] }
+rust_decimal_macros = "1"
+argon2 = "0.5"
+rand = "0.8"
+sha2 = "0.10"
+hex = "0.4"
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Hachage Argon2 rapide en développement/tests (sinon très lent en debug).
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3
+[profile.dev.package.password-hash]
+opt-level = 3

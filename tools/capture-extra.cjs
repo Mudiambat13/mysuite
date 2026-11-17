@@ -1,0 +1,31 @@
+// Captures complémentaires : page Rapports + interface mobile (même prérequis que capture-screenshots.cjs, sur la base déjà alimentée).
+const { chromium, devices } = require('playwright')
+const B = 'http://127.0.0.1:5173'
+const OUT = require('path').join(__dirname, '..', 'docs', 'screenshots')
+const H = { 'X-Requested-With': 'mysuite', 'Content-Type': 'application/json' }
+;(async () => {
+  const b = await chromium.launch()
+  const login = async (c, email) => { const r = await c.request.post(B + '/api/v1/auth/login', { headers: H, data: { email, password: 'Demo-Passw0rd-2026' } }); if (!r.ok()) throw new Error('login ' + r.status()) }
+  const desk = await b.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 })
+  await login(desk, 'rh@demo.test')
+  let p = await desk.newPage()
+  await p.goto(B + '/reports'); await p.waitForSelector('text=Entrées et sorties par mois'); await p.waitForTimeout(1200)
+  await p.screenshot({ path: OUT + '/12-rapports-mouvements.png', fullPage: true })
+  await p.click('role=tab[name="Absences"]'); await p.waitForTimeout(1500)
+  await p.screenshot({ path: OUT + '/13-rapports-absences.png', fullPage: true })
+  const mob = await b.newContext({ ...devices['iPhone 13'], deviceScaleFactor: 2 })
+  await login(mob, 'rh@demo.test')
+  p = await mob.newPage()
+  await p.goto(B + '/'); await p.waitForSelector('text=Effectif actif'); await p.waitForTimeout(800)
+  await p.screenshot({ path: OUT + '/14-mobile-tableau-de-bord.png' })
+  await p.click('role=button[name="Ouvrir le menu"]'); await p.waitForTimeout(500)
+  await p.screenshot({ path: OUT + '/15-mobile-menu.png' })
+  await p.click('a:has-text("Employés")'); await p.waitForSelector('text=Kasongo'); await p.waitForTimeout(600)
+  const overflow = await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
+  console.log('horizontal page overflow on /employees:', overflow)
+  await p.screenshot({ path: OUT + '/16-mobile-employes.png' })
+  await p.goto(B + '/reports'); await p.waitForSelector('text=Entrées et sorties par mois'); await p.waitForTimeout(1200)
+  console.log('overflow /reports:', await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth))
+  await p.screenshot({ path: OUT + '/17-mobile-rapports.png' })
+  await b.close()
+})().catch((e) => { console.log('FAIL', e.message.slice(0, 400)); process.exit(1) })
